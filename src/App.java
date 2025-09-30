@@ -9,6 +9,7 @@ public class App {
         int energia = 10;
         int quantidadeGranada = 5;
         int movimento = 1;
+        int bombaPlantada = 0;
 
         do {nomePolicial = JOptionPane.showInputDialog ("Digite o nome do policial");}
         while (nomePolicial.length() < 4);
@@ -21,7 +22,7 @@ public class App {
 
         while(terrorista.getEnergia() > 0 && policial.getEnergia() > 0){
             
-            System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++");
             System.out.printf ("%do movimento:\n\n", movimento);
 
             if (movimento > 1) {
@@ -50,6 +51,7 @@ public class App {
                 if (MovimentaPrimeiro == 0){
                         if (AcaoTerrorista == 0) {
                             terrorista.PlantarBomba();
+                            bombaPlantada = 1;
                         } else if (AcaoTerrorista == 1) {
                             terrorista.LançarGranada(policial);
                         } else if (AcaoTerrorista == 2) {
@@ -63,11 +65,17 @@ public class App {
                 } else {
                     System.out.printf ("Vida atual do policial: %d", policial.getEnergia());
                 }
-                System.out.println ("\n------------------------------------------------------------------------------\n");
+                System.out.println ("\n----------------------------------------------\n");
 
                     if (policial.getEnergia() > 0) {
                         if (AcaoPolicial == 0) {
                             policial.PlantarBomba();
+                            if (bombaPlantada == 1){
+                                System.out.println ("++++++++++++++++++++++++++++++++++++++++++++++\n");
+                                System.out.println ("\nO policial venceu!!!\n");
+                                bombaPlantada = 2;
+                                break;
+                            }
                         } else if (AcaoPolicial == 1) {
                             policial.LançarGranada(terrorista);
                         } else if (AcaoPolicial == 2) {
@@ -79,7 +87,6 @@ public class App {
                 if (terrorista.getEnergia() < 0) {       
                     System.out.println ("Vida atual do terrorista: 0");
                     break;
-                    System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 } else {
                     System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
                 }
@@ -87,6 +94,12 @@ public class App {
                 } else {
                         if (AcaoPolicial == 0) {
                             policial.PlantarBomba();
+                            if (bombaPlantada == 1){
+                                System.out.println ("++++++++++++++++++++++++++++++++++++++++++++++\n");
+                                System.out.println ("\nO policial venceu!!!\n");
+                                bombaPlantada = 2;
+                                break;
+                            }
                         } else if (AcaoPolicial == 1) {
                             policial.LançarGranada(terrorista);
                         } else if (AcaoPolicial == 2) {
@@ -97,15 +110,15 @@ public class App {
                 if (terrorista.getEnergia() < 0) {       
                     System.out.println ("Vida atual do terrorista: 0");
                     break;
-                    System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 } else {
                     System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
                 }
-                    System.out.println ("\n------------------------------------------------------------------------------\n");
+                    System.out.println ("\n----------------------------------------------\n");
 
                     if (terrorista.getEnergia() > 0) {
                         if (AcaoTerrorista == 0) {
                             terrorista.PlantarBomba();
+                            bombaPlantada = 1;
                         } else if (AcaoTerrorista == 1) {
                             terrorista.LançarGranada(policial);
                         } else if (AcaoTerrorista == 2) {
@@ -124,10 +137,21 @@ public class App {
             movimento += 1;
         }
 
-    if (terrorista.getEnergia() <= 0) {
-            System.out.println ("\nO policial venceu!!!\n");
-        } else if (policial.getEnergia() <= 0){
-            System.out.println ("\nO terrorista venceu!!!\n");
+    if (bombaPlantada == 2){}
+    else {
+            System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++");
+
+            if (bombaPlantada == 1) {
+                System.out.println ("\nA bomba plantada explodiu.");
+                System.out.println ("O terrorista venceu!!!\n");
+            } else {
+                if (terrorista.getEnergia() <= 0) {
+                    System.out.println ("\nO policial venceu!!!\n");
+                } else if (policial.getEnergia() <= 0){
+                    System.out.println ("\nO terrorista venceu!!!\n");
+                }
+            }
         }
     }
+    
 }
