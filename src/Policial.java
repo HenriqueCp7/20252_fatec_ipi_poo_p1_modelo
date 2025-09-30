@@ -12,31 +12,53 @@ public class Policial{
     };
 
     public void PlantarBomba () {
-        System.out.println("\nO policial " + this.nome + " esta desarmando a bomba...");
+        System.out.println("O policial " + this.nome + " esta desarmando a bomba...\n");
     };
 
-    public void LançarGranada () {
-        System.out.println("\nO policial " + this.nome + " esta lançando uma granada...");
+    public void LançarGranada (Terrorista terrorista) {
+        System.out.println("O policial " + this.nome + " esta lançando uma granada...");
+        terrorista.setEnergia(terrorista.getEnergia() - 4);
+            System.out.println ("O terrorista foi atingido por uma granada.\n");
         this.quantidadeGranadas -= 1;
     };
 
-    public void Atacar () {
-        System.out.println("\nO policial " + this.nome + " esta atacando...");
+    public void Atacar (Terrorista terrorista) {
+        System.out.println("O policial " + this.nome + " esta atacando...");
+        if (this.armamento == "Faca") {
+            terrorista.setEnergia(terrorista.getEnergia() - 1);
+            System.out.println ("O terrorista foi atacado por uma faca e sofreu 1 de dano.\n");
+        } else if (this.armamento == "Pistola") {
+            terrorista.setEnergia(terrorista.getEnergia() - 2);
+            System.out.println ("O terrorista levou um tiro de pistola e sofreu 2 de dano.\n");
+        } else if (this.armamento == "Fuzil") {
+            terrorista.setEnergia(terrorista.getEnergia() - 3);
+            System.out.println ("O terrorista levou um tiro de fuzil e sofreu 3 de dano.\n");
+        }
     };
 
-    public void PassarVez () {
-        System.out.println("\nO policial " + this.nome + " passou a vez");
-    };
+    public void PassarVez (Terrorista terrorista) {
+        System.out.println ("O policial " + this.nome + " passou a vez.");
+
+        int BonusEnergia = (int) (Math.random() * 2);
+        if (BonusEnergia == 0){
+            terrorista.setEnergia(terrorista.getEnergia() + 1);
+            System.out.println ("O terrorista ganhou 1 ponto de vida.\n");
+        } else {
+            terrorista.setEnergia(terrorista.getEnergia() + 2);
+            System.out.println ("O terrorista ganhou 2 pontos de vida.\n");
+        }
+    }
 
     public int getEnergia() {
         return energia;
     }
 
     public void setEnergia(int energia) {
-        if (energia >= 0 && energia <= 10) {
+        if (energia >= -3 && energia <= 10) {
         this.energia = energia;
-        } else if (energia < 0) {
-            System.out.println ("\nO policial morreu");
+        } 
+        if (energia < 0) {
+
         }
     }
 
@@ -45,11 +67,9 @@ public class Policial{
     }
 
     public void setNome(String nome) {
-        if (nome.length() < 4) {
-            System.out.println ("O nome do policial deve ter no minimo 4 letras\n");
-        } else {
+        if (nome.length() >= 4) {
             this.nome = nome;
-        }
+        }         
     }
 
     public int getQntGranadas() {
@@ -60,7 +80,7 @@ public class Policial{
         if (quantidadeGranadas >= 0 && quantidadeGranadas <= 5) {
             this.quantidadeGranadas = quantidadeGranadas;
         } else if (quantidadeGranadas < 0) {
-            System.out.println ("O terrorista " + nome + " esta sem granadas.\n");
+            System.out.println ("\nO terrorista " + nome + " esta sem granadas.\n");
         }
     }
 
