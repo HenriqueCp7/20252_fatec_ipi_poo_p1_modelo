@@ -18,7 +18,7 @@ public class Policial{
     public void LançarGranada (Terrorista terrorista) {
         System.out.println("O policial " + this.nome + " esta lançando uma granada...");
         terrorista.setEnergia(terrorista.getEnergia() - 4);
-            System.out.println ("O terrorista foi atingido por uma granada.\n");
+            System.out.println ("O terrorista foi atingido por uma granada e sofreu 4 de dano.\n");
         this.quantidadeGranadas -= 1;
     };
 
