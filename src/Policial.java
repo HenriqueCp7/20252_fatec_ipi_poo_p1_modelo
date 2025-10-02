@@ -3,27 +3,35 @@ public class Policial{
   private String nome;
   private int quantidadeGranadas;
   private String armamento;
+  private String mapa;
+  
 
-    public Policial (int energia, String nome, int quantidadeGranadas, String armamento) {
+    public Policial (int energia, String nome, int quantidadeGranadas, String armamento, int escolhaMapa) {
         this.setEnergia(energia);
         this.setNome(nome);
         this.setQntGranadas(quantidadeGranadas);
         this.setArmamento(armamento);
+        setMapa(escolhaMapa);
     };
 
     public void PlantarBomba () {
-        System.out.println("O policial " + this.nome + " esta desarmando a bomba...\n");
+        System.out.println("O policial " + this.nome + " esta desarmando a bomba em " + this.mapa + " ...\n");
     };
 
     public void LançarGranada (Terrorista terrorista) {
-        System.out.println("O policial " + this.nome + " esta lançando uma granada...");
+        if (this.quantidadeGranadas <= 0) {
+            System.out.println("\nO policial tentou lançar uma granada mas ele esta sem granadas.\n");
+            return; 
+        }
+
+        System.out.println("O policial " + this.nome + " esta lançando uma granada em " + this.mapa + " ...");
         terrorista.setEnergia(terrorista.getEnergia() - 4);
             System.out.println ("O terrorista foi atingido por uma granada e sofreu 4 de dano.\n");
         this.quantidadeGranadas -= 1;
     };
 
     public void Atacar (Terrorista terrorista) {
-        System.out.println("O policial " + this.nome + " esta atacando...");
+        System.out.println("O policial " + this.nome + " esta atacando em " + this.mapa + " ...");
         if (this.armamento == "Faca") {
             terrorista.setEnergia(terrorista.getEnergia() - 1);
             System.out.println ("O terrorista foi atacado por uma faca e sofreu 1 de dano.\n");
@@ -37,7 +45,7 @@ public class Policial{
     };
 
     public void PassarVez (Terrorista terrorista) {
-        System.out.println ("O policial " + this.nome + " passou a vez.");
+        System.out.println ("O policial " + this.nome + " passou a vez em " + this.mapa + " ...");
 
         int BonusEnergia = (int) (Math.random() * 2);
         if (BonusEnergia == 0){
@@ -54,11 +62,12 @@ public class Policial{
     }
 
     public void setEnergia(int energia) {
-        if (energia >= -3 && energia <= 10) {
-        this.energia = energia;
-        } 
         if (energia < 0) {
-
+            this.energia = 0;
+        } else if (energia > 10) {
+            this.energia = 10;
+        } else {
+            this.energia = energia;
         }
     }
 
@@ -79,9 +88,7 @@ public class Policial{
     public void setQntGranadas(int quantidadeGranadas) {
         if (quantidadeGranadas >= 0 && quantidadeGranadas <= 5) {
             this.quantidadeGranadas = quantidadeGranadas;
-        } else if (quantidadeGranadas < 0) {
-            System.out.println ("\nO terrorista " + nome + " esta sem granadas.\n");
-        }
+        } 
     }
 
     public String getArmamento() {
@@ -90,7 +97,21 @@ public class Policial{
 
     public void setArmamento(String armamento) {
         if (armamento == "Faca" || armamento == "Pistola" || armamento == "Fuzil"){
-        this.armamento = armamento;
+            this.armamento = armamento;
+        }
+    }
+
+    public String getMapa() {
+        return mapa;
+    }
+
+    public void setMapa(int escolhaMapa) {
+        if (escolhaMapa == 1 ) {
+            this.mapa = "Roma";
+        } else if (escolhaMapa == 2) {
+            this.mapa = "FatecIpiranga";
+        } else {
+            System.out.println("Mapa inexistente.");
         }
     }
 }
