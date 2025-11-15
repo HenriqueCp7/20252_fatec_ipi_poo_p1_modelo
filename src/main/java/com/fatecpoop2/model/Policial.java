@@ -1,24 +1,31 @@
+package com.fatecpoop2.model;
+
+import java.util.Random;
+
 public class Policial{
   private int energia;
   private String nome;
   private int quantidadeGranadas;
   private String armamento;
   private String mapa;
-  
+  private Faca faca = new Faca();
+  private Pistola pistola = new Pistola();
+  private Fuzil fuzil = new Fuzil();
 
-    public Policial (int energia, String nome, int quantidadeGranadas, String armamento, int escolhaMapa) {
+    public Policial (int energia, String nome, int quantidadeGranadas, int escolhaMapa) {
         this.setEnergia(energia);
         this.setNome(nome);
         this.setQntGranadas(quantidadeGranadas);
-        this.setArmamento(armamento);
+
         setMapa(escolhaMapa);
     };
 
-    public void PlantarBomba () {
+    public void desarmarBomba (Bomba bomba, Partida partida) {
         System.out.println("O policial " + this.nome + " esta desarmando a bomba em " + this.mapa + " ...\n");
+        bomba.desarmarBomba(partida);
     };
 
-    public void LançarGranada (Terrorista terrorista) {
+    public void lancarGranada (Terrorista terrorista) {
         if (this.quantidadeGranadas <= 0) {
             System.out.println("\nO policial tentou lançar uma granada mas ele esta sem granadas.\n");
             return; 
@@ -30,25 +37,36 @@ public class Policial{
         this.quantidadeGranadas -= 1;
     };
 
-    public void Atacar (Terrorista terrorista) {
+    public void atacar (Terrorista terrorista) {
+        int armamentoCtProxRodada = new Random().nextInt(3);
+
         System.out.println("O policial " + this.nome + " esta atacando em " + this.mapa + " ...");
-        if (this.armamento == "Faca") {
-            terrorista.setEnergia(terrorista.getEnergia() - 1);
-            System.out.println ("O terrorista foi atacado por uma faca e sofreu 1 de dano.\n");
-        } else if (this.armamento == "Pistola") {
-            terrorista.setEnergia(terrorista.getEnergia() - 2);
-            System.out.println ("O terrorista levou um tiro de pistola e sofreu 2 de dano.\n");
-        } else if (this.armamento == "Fuzil") {
-            terrorista.setEnergia(terrorista.getEnergia() - 3);
-            System.out.println ("O terrorista levou um tiro de fuzil e sofreu 3 de dano.\n");
+
+        switch(armamentoCtProxRodada) {
+            case 0: {
+                setArmamento ("Faca");
+                faca.atacar(terrorista);
+                break;
+            }
+            case 1: {
+                setArmamento ("Fuzil");
+                fuzil.atacar(terrorista);
+                break;
+                
+            }
+            case 2: {
+                setArmamento ("Pistola");
+                pistola.atacar(terrorista);
+                break;
+            }
         }
     };
 
-    public void PassarVez (Terrorista terrorista) {
+    public void passarVez (Terrorista terrorista) {
         System.out.println ("O policial " + this.nome + " passou a vez em " + this.mapa + " ...");
 
-        int BonusEnergia = (int) (Math.random() * 2);
-        if (BonusEnergia == 0){
+        int bonusEnergia = (int) (Math.random() * 2);
+        if (bonusEnergia == 0){
             terrorista.setEnergia(terrorista.getEnergia() + 1);
             System.out.println ("O terrorista ganhou 1 ponto de vida.\n");
         } else {
@@ -86,7 +104,12 @@ public class Policial{
     }
 
     public void setQntGranadas(int quantidadeGranadas) {
-        if (quantidadeGranadas >= 0 && quantidadeGranadas <= 5) {
+        if (quantidadeGranadas < 0) {
+            this.quantidadeGranadas = 0;
+            System.out.println ("\nO policial " + nome + " esta sem granadas.\n");
+        } else if (quantidadeGranadas > 5) {
+            this.quantidadeGranadas = 5;
+        } else {
             this.quantidadeGranadas = quantidadeGranadas;
         } 
     }
