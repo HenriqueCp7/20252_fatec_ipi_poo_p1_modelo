@@ -1,5 +1,6 @@
 package com.fatecpoop2.model;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Terrorista{
   private int energia;
@@ -10,6 +11,7 @@ public class Terrorista{
   private Faca faca = new Faca();
   private Pistola pistola = new Pistola();
   private Fuzil fuzil = new Fuzil();
+  private ArrayList<String> historicoAtaques = new ArrayList<>();
  
 
 
@@ -46,16 +48,19 @@ public class Terrorista{
             case 0: {
                 setArmamento ("Faca");
                 faca.atacar(policial);
+                historicoAtaques.add("Faca");
                 break;
             }
             case 1: {
                 setArmamento ("Fuzil");
                 fuzil.atacar(policial);
+                historicoAtaques.add("Fuzil");
                 break;
             }
             case 2: {
                 setArmamento ("Pistola");
                 pistola.atacar(policial);
+                historicoAtaques.add("Pistola");
                 break;
             }
         }
@@ -136,5 +141,9 @@ public class Terrorista{
             System.out.println("Mapa inexistente.");
         }
 
+    }
+
+    public ArrayList<String> getHistoricoAtaques() {
+        return historicoAtaques;
     }
 }

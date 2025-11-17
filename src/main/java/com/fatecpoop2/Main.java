@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import com.fatecpoop2.model.Policial;
 import com.fatecpoop2.model.Terrorista;
 import com.fatecpoop2.model.Partida;
+import com.fatecpoop2.db.HistoricoAtaquesDAO;
 import com.fatecpoop2.model.Bomba;
 
 public class Main {
@@ -33,6 +34,7 @@ public class Main {
             Terrorista terrorista = new Terrorista(energia, nomeTerrorista, quantidadeGranada, escolhaMapa);
             Partida partida = new Partida(qntRodadasPartida);
             Bomba bomba = new Bomba();
+            HistoricoAtaquesDAO historicoAtaquesDAO = new HistoricoAtaquesDAO();
 
         while (partida.getRodadaAtual() <= partida.getQntRodadasPartida() && partida.getHaUmVencedor() == false) {
             while(terrorista.getEnergia() > 0 && policial.getEnergia() > 0){
@@ -188,6 +190,8 @@ public class Main {
             partida.vencedorDaPartida();
 
             partida.setRodadaAtual(partida.getRodadaAtual() + 1);
+            historicoAtaquesDAO.cadastrar(policial.getNome(), policial.getHistoricoAtaques());
+            historicoAtaquesDAO.cadastrar(terrorista.getNome(), terrorista.getHistoricoAtaques());
             partida.setMovimento(1);
             bomba.setResetarBomba();
             policial.setQntGranadas(3);

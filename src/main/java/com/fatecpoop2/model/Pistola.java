@@ -1,6 +1,5 @@
 package com.fatecpoop2.model;
 
-
 import lombok.Getter;
 
 public class Pistola {
