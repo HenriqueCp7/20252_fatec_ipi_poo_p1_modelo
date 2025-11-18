@@ -14,6 +14,8 @@ public class Partida {
     private int pontuacaoPolicial = 0;
     private int pontuacaoTerrorista = 0;
     private boolean haUmVencedor = false;
+    private String trResultado;
+    private String ctResultado;
 
     public Partida(int qntRodadasPartida){
         this.setQntRodadasPartida(qntRodadasPartida);
@@ -26,28 +28,40 @@ public class Partida {
     }
 
     public void vencedorDaRodada(Bomba bomba, Terrorista terrorista, Policial policial){
+
         if (bomba.getBombaDesarmada()){
             System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println ("\nA bomba foi desarmada com sucesso!");
             System.out.println ("O policial venceu a rodada!!!");
             setPontuacaoPolicial(getPontuacaoPolicial() + 1);
-        }
-        else {
+
+            this.ctResultado = "Vencedor";
+            this.trResultado = "Perdedor";
+        } else {
             System.out.println ("\n++++++++++++++++++++++++++++++++++++++++++++++");
 
             if (bomba.getBombaPlantada() && bomba.vaiExplodir(this.movimento)) {
                 System.out.println ("\nA bomba plantada explodiu.");
                 System.out.println ("O terrorista venceu a rodada!!!");
                 setPontuacaoTerrorista(getPontuacaoTerrorista() + 1);
+
+                this.ctResultado = "Perdedor";
+                this.trResultado = "Vencedor";
             } else {
                 
                 if (terrorista.getEnergia() <= 0) {
                     System.out.println ("\nO policial venceu a rodada!!!\n");
                     setPontuacaoPolicial(getPontuacaoPolicial() + 1);
+
+                    this.ctResultado = "Vencedor";
+                    this.trResultado = "Perdedor";
                 } 
                 else if (policial.getEnergia() <= 0){
                     System.out.println ("\nO terrorista venceu a rodada!!!\n");
                     setPontuacaoTerrorista(getPontuacaoTerrorista() + 1);
+
+                    this.ctResultado = "Perdedor";
+                    this.trResultado = "Vencedor";
                 }
             }
         }
@@ -89,6 +103,11 @@ public class Partida {
         this.pontuacaoTerrorista = pontuacaoTerrorista;
     }
 
+    public void setResetaResultado(){
+        this.ctResultado = null;
+        this.trResultado = null;
+    }
+
     public int getAcaoTerrorista(){
         return this.acaoDoTerrorista;
     }
@@ -124,4 +143,13 @@ public class Partida {
     public boolean getHaUmVencedor(){
         return this.haUmVencedor;
     }
+
+    public String getResultadoCT(){
+        return this.ctResultado;
+    }
+
+    public String getResultadoTR(){
+        return this.trResultado;
+    }
+
 }

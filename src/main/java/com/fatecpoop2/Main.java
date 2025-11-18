@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import com.fatecpoop2.model.Policial;
 import com.fatecpoop2.model.Terrorista;
 import com.fatecpoop2.model.Partida;
+import com.fatecpoop2.db.ArmazemDeResultadosDAO;
 import com.fatecpoop2.db.HistoricoAtaquesDAO;
 import com.fatecpoop2.model.Bomba;
 
@@ -35,6 +36,7 @@ public class Main {
             Partida partida = new Partida(qntRodadasPartida);
             Bomba bomba = new Bomba();
             HistoricoAtaquesDAO historicoAtaquesDAO = new HistoricoAtaquesDAO();
+            ArmazemDeResultadosDAO armazemDeResultadosDAO = new ArmazemDeResultadosDAO();
 
         while (partida.getRodadaAtual() <= partida.getQntRodadasPartida() && partida.getHaUmVencedor() == false) {
             while(terrorista.getEnergia() > 0 && policial.getEnergia() > 0){
@@ -67,7 +69,7 @@ public class Main {
                     }
                     
                     if (policial.getEnergia() <= 0) {       
-                        System.out.println ("Vida atual do policial: 0\n");
+                        System.out.println ("Vida atual do policial: 0");
                         System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
                         break;
                     } else {
@@ -105,6 +107,7 @@ public class Main {
                         if (terrorista.getEnergia() <= 0) { 
                             System.out.printf ("Vida atual do policial: %d\n", policial.getEnergia());      
                             System.out.println ("Vida atual do terrorista: 0");
+                            break;
                         } else {
                             System.out.printf ("Vida atual do policial: %d\n", policial.getEnergia());
                             System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
@@ -169,14 +172,15 @@ public class Main {
                                     break;
                                 }
                             }
-                        }
 
-                        if (policial.getEnergia() <= 0) {       
-                            System.out.println ("Vida atual do policial: 0\n");
-                            System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
-                        } else {
-                            System.out.printf ("Vida atual do policial: %d\n", policial.getEnergia());
-                            System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
+                            if (policial.getEnergia() <= 0) {       
+                                System.out.println ("Vida atual do policial: 0");
+                                System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
+                                break;
+                            } else {
+                                System.out.printf ("Vida atual do policial: %d\n", policial.getEnergia());
+                                System.out.printf ("Vida atual do terrorista: %d", terrorista.getEnergia());
+                            }
                         }
                 }
                     
@@ -188,11 +192,13 @@ public class Main {
 
             partida.vencedorDaRodada(bomba, terrorista, policial);
             partida.vencedorDaPartida();
-
+            armazemDeResultadosDAO.cadastrar(policial.getNome(), partida.getResultadoCT() , partida.getRodadaAtual());
+            armazemDeResultadosDAO.cadastrar(terrorista.getNome(), partida.getResultadoTR() , partida.getRodadaAtual());
             partida.setRodadaAtual(partida.getRodadaAtual() + 1);
             historicoAtaquesDAO.cadastrar(policial.getNome(), policial.getHistoricoAtaques());
             historicoAtaquesDAO.cadastrar(terrorista.getNome(), terrorista.getHistoricoAtaques());
             partida.setMovimento(1);
+            partida.setResetaResultado();
             bomba.setResetarBomba();
             policial.setQntGranadas(3);
             terrorista.setQntGranadas(3);
